@@ -14,6 +14,9 @@ export default class implements HoverProvider {
     position: Position,
     token: CancellationToken
   ): ProviderResult<Hover> {
+    const { getText } = document;
+    const text = getText();
+    console.log("xxxxxxxxxxxx", text);
     return new Hover(new MarkdownString(""));
   }
 }

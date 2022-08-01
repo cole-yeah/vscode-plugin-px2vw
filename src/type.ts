@@ -1,5 +1,5 @@
 export interface IConfig {
-  width?: number;
-  height?: number;
-  digist?: number;
+  width: number;
+  height: number;
+  decimal: number;
 }

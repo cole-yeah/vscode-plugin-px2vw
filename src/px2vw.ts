@@ -1,18 +1,33 @@
 import {} from "vscode";
 import { IConfig } from "./type";
 
+const reg = /(\d+(\.\d+)?)px/;
+
 export default class Process {
   config: IConfig;
   constructor(config: IConfig) {
     this.config = config;
   }
+  getRatio() {
+    const { width, height, decimal } = this.config;
+    const wRatio = 100 / width;
+    const hRatio = 100 / height;
+    return [wRatio, hRatio];
+  }
   px2vw(text: string) {
     const num = parseFloat(text);
-    // const vw =
+    const { decimal } = this.config;
+    const [wRatio, hRatio] = this.getRatio();
+    const vw = (num * wRatio).toFixed(decimal);
+    const vh = (num * hRatio).toFixed(decimal);
+    return [`${vw}vw`, `${vh}vh`];
   }
   convert(text: string) {
-    const res = text.match(/(\d+)p(x)?/);
-    if (!res) return "";
+    const match = text.match(reg);
+    if (!match) return "";
+    const [numWithPx, num] = match;
+    const [vw, vh] = this.px2vw(num);
+    return text.replace(numWithPx, vw);
   }
   convertAll(text: string) {}
 }
