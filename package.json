@@ -1,5 +1,5 @@
 {
-  "name": "vscode-plugin-px2vw",
+	"name": "vscode-plugin-px2vw",
 	"displayName": "vscode-plugin-px2vw",
 	"description": "plugin",
 	"version": "0.0.1",
@@ -10,13 +10,13 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:vscode-plugin-px2vw.helloWorld"
+		"onCommand:extension.px2vw"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vscode-plugin-px2vw.helloWorld",
+				"command": "extension.px2vw",
 				"title": "Hello World"
 			}
 		]

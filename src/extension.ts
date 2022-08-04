@@ -11,6 +11,7 @@ let config: IConfig = {
 };
 
 export function activate(context: vscode.ExtensionContext) {
+  console.log(">>>>>>>>>> 程序运行");
   const configFromVscode = vscode.workspace.getConfiguration(
     "px-to-vw"
   ) as unknown as IConfig;

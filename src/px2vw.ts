@@ -27,6 +27,7 @@ export default class Process {
     if (!match) return "";
     const [numWithPx, num] = match;
     const [vw, vh] = this.px2vw(num);
+    console.log("xxxxxxxxxxxxxxxxxxx convert", vw, vh);
     return text.replace(numWithPx, vw);
   }
   convertAll(text: string) {}
