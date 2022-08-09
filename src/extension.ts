@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import Process from "./px2vw";
+import { CssViewportProvider } from "./provider";
 import { IConfig } from "./type";
 
 let config: IConfig = {
@@ -10,8 +11,9 @@ let config: IConfig = {
   decimal: 2,
 };
 
+const LANS = ["css", "less", "scss", "jsx", "js", "ts", "tsx", "vue"];
+
 export function activate(context: vscode.ExtensionContext) {
-  console.log(">>>>>>>>>> 程序运行");
   const configFromVscode = vscode.workspace.getConfiguration(
     "px-to-vw"
   ) as unknown as IConfig;
@@ -19,11 +21,21 @@ export function activate(context: vscode.ExtensionContext) {
     config = configFromVscode;
   }
   const process = new Process(config);
+  const provider = new CssViewportProvider(process);
+
+  for (let lan of LANS) {
+    const disposableProvider = vscode.languages.registerCompletionItemProvider(
+      lan,
+      provider
+    );
+    context.subscriptions.push(disposableProvider);
+  }
+
   const disposable = vscode.commands.registerTextEditorCommand(
     "extension.px2vw",
     (textEditor, edit) => {
       const { document, selection } = textEditor;
-      // if(selection.isEmpty)
+      if (selection.isEmpty) return;
 
       const text = document.getText(selection);
       textEditor.edit((builder) => {

@@ -8,27 +8,26 @@ export default class Process {
   constructor(config: IConfig) {
     this.config = config;
   }
-  getRatio() {
+  private getRatio() {
     const { width, height, decimal } = this.config;
     const wRatio = 100 / width;
     const hRatio = 100 / height;
     return [wRatio, hRatio];
   }
-  px2vw(text: string) {
+  px2vw(text: string): [number, number, number] {
     const num = parseFloat(text);
     const { decimal } = this.config;
     const [wRatio, hRatio] = this.getRatio();
-    const vw = (num * wRatio).toFixed(decimal);
-    const vh = (num * hRatio).toFixed(decimal);
-    return [`${vw}vw`, `${vh}vh`];
+    const vw = Number((num * wRatio).toFixed(decimal));
+    const vh = Number((num * hRatio).toFixed(decimal));
+    return [num, vw, vh];
   }
   convert(text: string) {
     const match = text.match(reg);
     if (!match) return "";
     const [numWithPx, num] = match;
-    const [vw, vh] = this.px2vw(num);
-    console.log("xxxxxxxxxxxxxxxxxxx convert", vw, vh);
-    return text.replace(numWithPx, vw);
+    const [, vw, vh] = this.px2vw(num);
+    return text.replace(numWithPx, `${vw}vw`);
   }
   convertAll(text: string) {}
 }
