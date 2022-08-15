@@ -31,12 +31,24 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposableProvider);
   }
 
-  const disposable = vscode.commands.registerTextEditorCommand(
+  vscode.commands.registerTextEditorCommand(
     "extension.px2vw",
     (textEditor, edit) => {
       const { document, selection } = textEditor;
-      if (selection.isEmpty) return;
+      const start = new vscode.Position(0, 0);
+      // const end =
+      const text = document.getText(selection);
+      textEditor.edit((builder) => {
+        builder.replace(selection, process.convert(text));
+      });
+    }
+  );
 
+  const disposable = vscode.commands.registerTextEditorCommand(
+    "extension.px2vwWhenSelection",
+    (textEditor, edit) => {
+      const { document, selection } = textEditor;
+      if (selection.isEmpty) return;
       const text = document.getText(selection);
       textEditor.edit((builder) => {
         builder.replace(selection, process.convert(text));

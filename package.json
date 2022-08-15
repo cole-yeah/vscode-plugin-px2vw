@@ -17,11 +17,11 @@
 		"commands": [
 			{
 				"command": "extension.px2vw",
-				"title": "px to vw"
+				"title": "pxTovw"
 			},
 			{
 				"command": "extension.px2vwWhenSelection",
-				"title": "px to vw when selection"
+				"title": "pxTovwSelect"
 			}
 		],
 		"keybindings": [],
@@ -33,7 +33,7 @@
 				},
 				{
 					"when": "editorHasSelection",
-					"command": "px2vwWhenSelection"
+					"command": "extension.px2vwWhenSelection"
 				}
 			]
 		}
