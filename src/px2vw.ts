@@ -2,6 +2,7 @@ import {} from "vscode";
 import { IConfig } from "./type";
 
 const reg = /(\d+(\.\d+)?)px/;
+const gReg = /(\d+(\.\d+)?)px/g;
 
 export default class Process {
   config: IConfig;
@@ -22,12 +23,17 @@ export default class Process {
     const vh = Number((num * hRatio).toFixed(decimal));
     return [num, vw, vh];
   }
-  convert(text: string) {
+  private convert(text: string) {
     const match = text.match(reg);
     if (!match) return "";
     const [numWithPx, num] = match;
     const [, vw, vh] = this.px2vw(num);
     return text.replace(numWithPx, `${vw}vw`);
   }
-  convertAll(text: string) {}
+  convertAll(text: string) {
+    if (!text) return text;
+    return text.replace(gReg, (str: string) => {
+      return this.convert(str);
+    });
+  }
 }

@@ -2,7 +2,7 @@
 	"name": "vscode-plugin-px2vw",
 	"displayName": "vscode-plugin-px2vw",
 	"description": "plugin",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
@@ -12,6 +12,7 @@
 	"activationEvents": [
 		"onCommand:extension.px2vw"
 	],
+	"repository": "https://github.com/cole-yeah/vscode-plugin-px2vw",
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
@@ -46,7 +47,8 @@
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js",
 		"build": "rollup -c",
-		"dev": "rollup -c --watch"
+		"dev": "rollup -c --watch",
+		"pkg": "vsce package"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^22.0.2",

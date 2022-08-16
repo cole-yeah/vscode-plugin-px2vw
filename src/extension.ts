@@ -18,12 +18,16 @@ export function activate(context: vscode.ExtensionContext) {
     "px-to-vw"
   ) as unknown as IConfig;
   if (configFromVscode) {
-    config = configFromVscode;
+    config = {
+      ...config,
+      ...configFromVscode,
+    };
   }
   const process = new Process(config);
   const provider = new CssViewportProvider(process);
 
   for (let lan of LANS) {
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx provider");
     const disposableProvider = vscode.languages.registerCompletionItemProvider(
       lan,
       provider
@@ -34,12 +38,17 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerTextEditorCommand(
     "extension.px2vw",
     (textEditor, edit) => {
-      const { document, selection } = textEditor;
+      const { document: doc } = textEditor;
+      let selection: vscode.Selection | vscode.Range = textEditor.selection;
       const start = new vscode.Position(0, 0);
-      // const end =
-      const text = document.getText(selection);
+      const end = new vscode.Position(
+        doc.lineCount - 1,
+        doc.lineAt(doc.lineCount - 1).text.length
+      );
+      selection = new vscode.Range(start, end);
+      const text = doc.getText(selection);
       textEditor.edit((builder) => {
-        builder.replace(selection, process.convert(text));
+        builder.replace(selection, process.convertAll(text));
       });
     }
   );
@@ -47,11 +56,19 @@ export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerTextEditorCommand(
     "extension.px2vwWhenSelection",
     (textEditor, edit) => {
-      const { document, selection } = textEditor;
-      if (selection.isEmpty) return;
-      const text = document.getText(selection);
+      const { document: doc } = textEditor;
+      let selection: vscode.Selection | vscode.Range = textEditor.selection;
+      if (selection.isEmpty) {
+        const start = new vscode.Position(0, 0);
+        const end = new vscode.Position(
+          doc.lineCount - 1,
+          doc.lineAt(doc.lineCount - 1).text.length
+        );
+        selection = new vscode.Range(start, end);
+      }
+      const text = doc.getText(selection);
       textEditor.edit((builder) => {
-        builder.replace(selection, process.convert(text));
+        builder.replace(selection, process.convertAll(text));
       });
     }
   );
