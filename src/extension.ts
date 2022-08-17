@@ -26,8 +26,8 @@ export function activate(context: vscode.ExtensionContext) {
   const process = new Process(config);
   const provider = new CssViewportProvider(process);
 
+  // TODO: 这个completion不生效
   for (let lan of LANS) {
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx provider");
     const disposableProvider = vscode.languages.registerCompletionItemProvider(
       lan,
       provider

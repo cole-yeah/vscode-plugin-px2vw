@@ -2,7 +2,7 @@
 	"name": "vscode-plugin-px2vw",
 	"displayName": "vscode-plugin-px2vw",
 	"description": "plugin",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
@@ -10,7 +10,18 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.px2vw"
+		"onLanguage:html",
+		"onLanguage:vue",
+		"onLanguage:css",
+		"onLanguage:wxss",
+		"onLanguage:less",
+		"onLanguage:scss",
+		"onLanguage:sass",
+		"onLanguage:stylus",
+		"onLanguage:js",
+		"onLanguage:jsx",
+		"onLanguage:ts",
+		"onLanguage:tsx"
 	],
 	"repository": "https://github.com/cole-yeah/vscode-plugin-px2vw",
 	"main": "./out/extension.js",
