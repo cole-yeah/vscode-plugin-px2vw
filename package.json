@@ -7,21 +7,23 @@
 		"vscode": "^1.69.0"
 	},
 	"categories": [
+		"Formatters",
+		"Snippets",
 		"Other"
 	],
 	"activationEvents": [
 		"onLanguage:html",
 		"onLanguage:vue",
 		"onLanguage:css",
-		"onLanguage:wxss",
+		"onLanguage:postcss",
 		"onLanguage:less",
 		"onLanguage:scss",
 		"onLanguage:sass",
 		"onLanguage:stylus",
-		"onLanguage:js",
-		"onLanguage:jsx",
-		"onLanguage:ts",
-		"onLanguage:tsx"
+		"onLanguage:tpl",
+		"onLanguage:wxss",
+		"onLanguage:javascriptreact",
+		"onLanguage:typescriptreact"
 	],
 	"repository": "https://github.com/cole-yeah/vscode-plugin-px2vw",
 	"main": "./out/extension.js",
@@ -29,11 +31,11 @@
 		"commands": [
 			{
 				"command": "extension.px2vw",
-				"title": "pxTovw"
+				"title": "px --> vw"
 			},
 			{
 				"command": "extension.px2vwWhenSelection",
-				"title": "pxTovwSelect"
+				"title": "选中px --> vw"
 			}
 		],
 		"keybindings": [],

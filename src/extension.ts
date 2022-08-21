@@ -11,7 +11,8 @@ let config: IConfig = {
   decimal: 2,
 };
 
-const LANS = ["css", "less", "scss", "jsx", "js", "ts", "tsx", "vue"];
+// 好坑啊这个postcss，普通的.css文件需要在数组内增加postcss才能生效
+const LANS = ["css", "postcss", "ts", "tsx"];
 
 export function activate(context: vscode.ExtensionContext) {
   const configFromVscode = vscode.workspace.getConfiguration(
@@ -34,6 +35,8 @@ export function activate(context: vscode.ExtensionContext) {
     );
     context.subscriptions.push(disposableProvider);
   }
+
+  // vscode.languages.registerHoverProvider();
 
   vscode.commands.registerTextEditorCommand(
     "extension.px2vw",

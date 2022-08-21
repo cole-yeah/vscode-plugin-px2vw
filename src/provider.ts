@@ -1,48 +1,37 @@
 import * as vscode from "vscode";
 import Process from "./px2vw";
 
+const UNIT_ARRAY = ["vw", "vh"];
+
 export class CssViewportProvider implements vscode.CompletionItemProvider {
   constructor(private process: Process) {}
 
   provideCompletionItems(
     document: vscode.TextDocument,
-    position: vscode.Position,
-    token: vscode.CancellationToken,
-    context: vscode.CompletionContext
+    position: vscode.Position
   ): vscode.ProviderResult<
     vscode.CompletionItem[] | vscode.CompletionList<vscode.CompletionItem>
   > {
-    // return [{
-    //   label: 'suggestion',
-    //   insertText: 'my suggestion'
-    // }]
-    const wordAtPosition = document.getWordRangeAtPosition(position);
-    let word = "";
-    if (wordAtPosition && wordAtPosition.start.character < position.character) {
-      const allWord = document.getText(wordAtPosition);
-      word = allWord.substring(
-        0,
-        position.character - wordAtPosition.start.character
+    return new Promise((resolve) => {
+      const lineText = document.getText(
+        new vscode.Range(position.with(undefined, 0), position)
       );
-    }
-    const res = this.process.px2vw(word);
-    if (!res?.length) return [];
-    const [px, vw, vh] = res;
-    // const item = new vscode.CompletionItem(
-    //   `${px}px -> ${vw}vw`,
-    //   vscode.CompletionItemKind.Snippet
-    // );
-    // item.insertText = `${vw}vw`;
-    // item.detail = "Value";
-    return [
-      {
-        label: `${px}px -> ${vw}vw`,
-        insertText: `${vw}vw`,
-      },
-      {
-        label: `${px}px -> ${vh}vh`,
-        insertText: `${vh}vh`,
-      },
-    ];
+      const [num, ...rest] = this.process.px2vw(lineText);
+
+      if (!num) {
+        return resolve([]);
+      }
+      return resolve(
+        rest.map((val, i) => {
+          const unit = UNIT_ARRAY[i]!;
+          const item = new vscode.CompletionItem(
+            `${num}px --> ${val}${unit}`,
+            vscode.CompletionItemKind.Snippet
+          );
+          item.insertText = `${val}${unit}`;
+          return item;
+        })
+      );
+    });
   }
 }

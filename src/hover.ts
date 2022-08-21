@@ -10,13 +10,13 @@ import {
 
 export default class implements HoverProvider {
   provideHover(
-    document: TextDocument,
-    position: Position,
+    doc: TextDocument,
+    pos: Position,
     token: CancellationToken
   ): ProviderResult<Hover> {
-    const { getText } = document;
+    const { getText } = doc;
+    const line = doc.lineAt(pos.line).text.trim();
     const text = getText();
-    console.log("xxxxxxxxxxxx", text);
     return new Hover(new MarkdownString(""));
   }
 }

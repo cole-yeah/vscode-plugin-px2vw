@@ -1,34 +1,41 @@
 import {} from "vscode";
 import { IConfig } from "./type";
 
-const reg = /(\d+(\.\d+)?)px/;
-const gReg = /(\d+(\.\d+)?)px/g;
+const reg = /(\d+(\.\d+)?)p(x)?/;
+const gReg = /(\d+(\.\d+)?)p(x)?/g;
 
 export default class Process {
   config: IConfig;
   constructor(config: IConfig) {
     this.config = config;
   }
+  private fixedNumber(num: number, decimal?: number): number {
+    return Number(num.toFixed(decimal ?? 3));
+  }
   private getRatio() {
-    const { width, height, decimal } = this.config;
-    const wRatio = 100 / width;
-    const hRatio = 100 / height;
+    const { width, height } = this.config;
+    const wRatio = this.fixedNumber(100 / width);
+    const hRatio = this.fixedNumber(100 / height);
     return [wRatio, hRatio];
   }
   px2vw(text: string): [number, number, number] {
-    const num = parseFloat(text);
+    const strNumber = this.matchNumber(text);
+    if (!strNumber) return [0, 0, 0];
+    const num = parseFloat(strNumber);
     const { decimal } = this.config;
     const [wRatio, hRatio] = this.getRatio();
-    const vw = Number((num * wRatio).toFixed(decimal));
-    const vh = Number((num * hRatio).toFixed(decimal));
+    const vw = this.fixedNumber(num * wRatio, decimal);
+    const vh = this.fixedNumber(num * hRatio, decimal);
     return [num, vw, vh];
   }
-  private convert(text: string) {
+  private matchNumber(text: string) {
     const match = text.match(reg);
     if (!match) return "";
-    const [numWithPx, num] = match;
-    const [, vw, vh] = this.px2vw(num);
-    return text.replace(numWithPx, `${vw}vw`);
+    return match[1];
+  }
+  private convert(text: string) {
+    const [, vw, vh] = this.px2vw(text);
+    return text.replace(reg, `${vw}vw`);
   }
   convertAll(text: string) {
     if (!text) return text;
