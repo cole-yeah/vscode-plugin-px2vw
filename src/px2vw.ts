@@ -4,6 +4,10 @@ import { IConfig } from "./type";
 const reg = /(\d+(\.\d+)?)p(x)?/;
 const gReg = /(\d+(\.\d+)?)p(x)?/g;
 
+const vwReg = /(\d+(\.\d+)?)(vw|vh)/;
+const VW_SIGN = "vw";
+const VH_SIGN = "vh";
+
 export default class Process {
   config: IConfig;
   constructor(config: IConfig) {
@@ -27,6 +31,20 @@ export default class Process {
     const vw = this.fixedNumber(num * wRatio, decimal);
     const vh = this.fixedNumber(num * hRatio, decimal);
     return [num, vw, vh];
+  }
+  vw2px(text: string): [number, number, string] {
+    const strNumber = this.matchNumberByVw(text);
+    if (!strNumber) return [0, 0, ""];
+    const num = parseFloat(strNumber);
+    const [wRatio, hRatio] = this.getRatio();
+    const isVw = text.includes(VW_SIGN);
+    const val = this.fixedNumber(num / (isVw ? wRatio : hRatio), 2);
+    return [num, val, isVw ? "vw" : "vh"];
+  }
+  private matchNumberByVw(text: string) {
+    const match = text.match(vwReg);
+    if (!match) return "";
+    return match[1];
   }
   private matchNumber(text: string) {
     const match = text.match(reg);

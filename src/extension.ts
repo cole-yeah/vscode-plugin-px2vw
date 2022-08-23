@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import Process from "./px2vw";
 import { CssViewportProvider } from "./provider";
 import { IConfig } from "./type";
+import HoverProvider from "./hover";
 
 let config: IConfig = {
   width: 1920,
@@ -26,14 +27,16 @@ export function activate(context: vscode.ExtensionContext) {
   }
   const process = new Process(config);
   const provider = new CssViewportProvider(process);
+  const hoverProvider = new HoverProvider(process);
 
-  // TODO: 这个completion不生效
   for (let lan of LANS) {
-    const disposableProvider = vscode.languages.registerCompletionItemProvider(
+    const completionDisposable =
+      vscode.languages.registerCompletionItemProvider(lan, provider);
+    const hoverDispoable = vscode.languages.registerHoverProvider(
       lan,
-      provider
+      hoverProvider
     );
-    context.subscriptions.push(disposableProvider);
+    context.subscriptions.push(completionDisposable, hoverDispoable);
   }
 
   // vscode.languages.registerHoverProvider();
