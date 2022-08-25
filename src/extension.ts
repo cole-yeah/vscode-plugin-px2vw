@@ -17,7 +17,7 @@ const LANS = ["css", "postcss", "ts", "tsx"];
 
 export function activate(context: vscode.ExtensionContext) {
   const configFromVscode = vscode.workspace.getConfiguration(
-    "px-to-vw"
+    "px2vw"
   ) as unknown as IConfig;
   if (configFromVscode) {
     config = {

@@ -38,7 +38,12 @@
 				"title": "选中px --> vw"
 			}
 		],
-		"keybindings": [],
+		"keybindings": [
+			{
+				"command": "extension.px2vw",
+				"key": "Alt+v"
+			}
+		],
 		"menus": {
 			"editor/context": [
 				{
@@ -50,6 +55,24 @@
 					"command": "extension.px2vwWhenSelection"
 				}
 			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "px2vw configuration",
+			"properties": {
+				"px2vw.width": {
+					"type": "number",
+					"default": "1920"
+				},
+				"px2vw.height": {
+					"type": "number",
+					"default": "1080"
+				},
+				"px2vw.decimal": {
+					"type": "number",
+					"default": "2"
+				}
+			}
 		}
 	},
 	"scripts": {
